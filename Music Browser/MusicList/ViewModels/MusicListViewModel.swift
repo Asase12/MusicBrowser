@@ -61,7 +61,8 @@ final class MusicListViewModel: ObservableObject {
             MusicListItemPresentation(id: $0.id,
                                       imageUrl: URL(string: $0.coverUrlString),   // TODO: caching of the image?
                                       title: $0.label,
-                                      artist: $0.artist)
+                                      artist: $0.artist,
+                                      year: $0.year)
         }
     }
 }

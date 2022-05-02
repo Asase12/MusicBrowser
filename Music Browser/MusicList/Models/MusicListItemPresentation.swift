@@ -12,4 +12,5 @@ struct MusicListItemPresentation: Identifiable {
     let imageUrl: URL?
     let title: String
     let artist: String
+    let year: String
 }

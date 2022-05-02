@@ -11,7 +11,7 @@ import SwiftUI
 final class FakeMusicListViewModel: ObservableObject, MusicItemsModifier, MusicDetailItemViewModelBuilding {
 
     var presentationItems = [
-        MusicListItemPresentation(id: "0", imageUrl: nil, title: "Song Title", artist: "Artist Name")
+        MusicListItemPresentation(id: "0", imageUrl: nil, title: "Song Title", artist: "Artist Name", year: "2007")
     ]
 
     var isLoading = true

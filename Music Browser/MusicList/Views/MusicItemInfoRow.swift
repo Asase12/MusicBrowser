@@ -23,7 +23,7 @@ struct MusicItemInfoRow: View {
                 Text(presentation.title)
                     .fontWeight(.bold)
                 
-                Text(presentation.artist)
+                Text("\(presentation.artist), \(presentation.year)")
                     .foregroundColor(Color(.darkGray))
             }
             Spacer()
@@ -37,7 +37,8 @@ struct MusicItemRow_Previews: PreviewProvider {
         let presentation = MusicListItemPresentation(id: "0",
                                                      imageUrl: nil,
                                                      title: "Album's Name",
-                                                     artist: "Artist")
+                                                     artist: "Artist",
+                                                     year: "2007")
         ZStack {
             Color.gray
             MusicItemInfoRow(presentation: presentation)
