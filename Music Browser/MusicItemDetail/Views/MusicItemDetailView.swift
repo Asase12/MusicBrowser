@@ -25,6 +25,7 @@ struct MusicItemDetailView<ViewModel>: View where ViewModel: ObservableObject & 
 
                     Text(viewModel.presentation.album)
                         .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
                         .padding(.bottom, 20)
 
                     Text(viewModel.presentation.label)

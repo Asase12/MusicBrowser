@@ -7,14 +7,16 @@
 
 import SwiftUI
 
-struct MusicListView<ViewModel>: View where ViewModel: MusicItemsModifier & MusicDetailItemViewModelBuilding & ObservableObject {
+struct MusicListView<ViewModel>: View where ViewModel: MusicItemsModifier & ObservableObject {
 
+    @State private(set) var searchQuery = ""
     @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {
         NavigationView {
             ZStack(alignment: .center) {
-                List(viewModel.presentationItems) { presentationItem in
+
+                List(viewModel.isFilterActive ? viewModel.filteredItems : viewModel.presentationItems) { presentationItem in
 
                     if let detailViewModel = viewModel.musicDetailItemViewModel(for: presentationItem.id,
                                                                                 with: presentationItem.imageUrl) {
@@ -32,6 +34,13 @@ struct MusicListView<ViewModel>: View where ViewModel: MusicItemsModifier & Musi
                 ProgressView().isRemoved(!viewModel.isLoading)
             }
             .navigationBarTitle(Text("Music Browser"), displayMode: .inline)
+            .searchable(text: $searchQuery, placement: .navigationBarDrawer(displayMode: .automatic))
+            .onChange(of: searchQuery) { text in
+                viewModel.filter(with: text)
+            }
+            .gesture(DragGesture().onChanged({ _ in
+                UIApplication.shared.endEditing()
+            }))
         }
         .onAppear() {
             viewModel.updateMusicItems()

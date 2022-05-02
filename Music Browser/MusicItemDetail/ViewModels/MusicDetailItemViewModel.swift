@@ -19,8 +19,4 @@ final class MusicDetailItemViewModel: ObservableObject, MusicItemViewModifier {
     init(with presentation: MusicDetailItemPresentation) {
         self.presentation = presentation
     }
-
-    deinit {
-        print("DEINIT: MusicDetailItemViewModel !!!")
-    }
 }

@@ -20,7 +20,7 @@ struct MusicItemInfoRow: View {
                 .cornerRadius(4)
 
             VStack(alignment: .leading, spacing: 8.0) {
-                Text(presentation.title)
+                Text(presentation.album)
                     .fontWeight(.bold)
                 
                 Text("\(presentation.artist), \(presentation.year)")
@@ -36,7 +36,7 @@ struct MusicItemRow_Previews: PreviewProvider {
     static var previews: some View {
         let presentation = MusicListItemPresentation(id: "0",
                                                      imageUrl: nil,
-                                                     title: "Album's Name",
+                                                     album: "Album's Name",
                                                      artist: "Artist",
                                                      year: "2007")
         ZStack {

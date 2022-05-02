@@ -10,7 +10,7 @@ import Foundation
 struct MusicListItemPresentation: Identifiable {
     let id: String
     let imageUrl: URL?
-    let title: String
+    let album: String
     let artist: String
     let year: String
 }

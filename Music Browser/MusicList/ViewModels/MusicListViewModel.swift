@@ -9,18 +9,32 @@ import Foundation
 import Combine
 import SwiftUI
 
-protocol MusicItemsModifier: AnyObject {
-    var presentationItems: [MusicListItemPresentation] { get }
-    var isLoading: Bool { get }
+typealias MusicItemsModifier = MusicItemsPresenting & MusicItemsFetching & Loading & MusicDetailItemViewModelBuilding & MusicItemsFiltering
 
+protocol MusicItemsPresenting: AnyObject {
+    var presentationItems: [MusicListItemPresentation] { get }
+}
+
+protocol MusicItemsFetching: AnyObject {
     func updateMusicItems()
+}
+
+protocol Loading: AnyObject {
+    var isLoading: Bool { get }
 }
 
 protocol MusicDetailItemViewModelBuilding: AnyObject {
     func musicDetailItemViewModel(for musicItemId: String, with imageUrl: URL?) -> MusicDetailItemViewModel?
 }
 
-final class MusicListViewModel: ObservableObject {
+protocol MusicItemsFiltering: AnyObject {
+    var isFilterActive: Bool { get }
+    var filteredItems: [MusicListItemPresentation] { get }
+
+    func filter(with searchText: String)
+}
+
+final class MusicListViewModel: ObservableObject, Loading, MusicItemsPresenting {
 
     // MARK: - Properties
 
@@ -28,9 +42,11 @@ final class MusicListViewModel: ObservableObject {
 
     private(set) var service: MusicListLoadable
 
-    @Published private(set) var musicItems: [MusicItem] = []
-    @Published private(set) var presentationItems: [MusicListItemPresentation] = []
+    @Published private(set) var musicItems = [MusicItem]()
+    @Published private(set) var presentationItems = [MusicListItemPresentation]()
     @Published private(set) var isLoading = false
+    @Published private(set) var filteredItems = [MusicListItemPresentation]()
+    @Published private(set) var isFilterActive = false
 
     // MARK: - Constructor
 
@@ -39,8 +55,6 @@ final class MusicListViewModel: ObservableObject {
         self.disposables = Set<AnyCancellable>()
         subscribeForUpdates()
     }
-
-    // MARK: - Functions
 
     // MARK: - Private functions
 
@@ -57,17 +71,19 @@ final class MusicListViewModel: ObservableObject {
 
     //TODO: move to a protocol, test it
     private func convertToMusicListItemPresentation(from musicItems: [MusicItem]) -> [MusicListItemPresentation] {
-        musicItems.compactMap {
+        musicItems
+            .sorted { $0.album < $1.album }
+            .compactMap {
             MusicListItemPresentation(id: $0.id,
-                                      imageUrl: URL(string: $0.coverUrlString),   // TODO: caching of the image?
-                                      title: $0.label,
+                                      imageUrl: URL(string: $0.coverUrlString),
+                                      album: $0.album,
                                       artist: $0.artist,
                                       year: $0.year)
         }
     }
 }
 
-extension MusicListViewModel: MusicItemsModifier {
+extension MusicListViewModel: MusicItemsFetching {
 
     func updateMusicItems() {
         isLoading = true
@@ -89,7 +105,6 @@ extension MusicListViewModel: MusicDetailItemViewModelBuilding {
         guard let musicItem = musicItems.first(where: { $0.id == musicItemId }) else {
             return nil
         }
-        print("MusicListViewModel: \(#function): musicItem = \(musicItem)")
         let presentation = MusicDetailItemPresentation(imageUrl: imageUrl,
                                                        artistName: musicItem.artist,
                                                        album: musicItem.album,
@@ -97,5 +112,27 @@ extension MusicListViewModel: MusicDetailItemViewModelBuilding {
                                                        year: musicItem.year,
                                                        tracks: musicItem.tracks)
         return MusicDetailItemViewModel(with: presentation)
+    }
+}
+
+extension MusicListViewModel: MusicItemsFiltering {
+
+    func filter(with searchText: String) {
+        isFilterActive = !searchText.preparedSearchString.isEmpty
+        guard isFilterActive else {
+            filteredItems.removeAll()
+            return
+        }
+        let preparedSearch = searchText.lowercased()
+        let filteredMusicItems = musicItems.filter {(musicItem: MusicItem) -> Bool in
+            return musicItem.album.lowercased().contains(preparedSearch) ||
+                musicItem.artist.lowercased().contains(preparedSearch) ||
+                musicItem.label.lowercased().contains(preparedSearch) ||
+                musicItem.year.lowercased().contains(preparedSearch) ||
+                musicItem.tracks.filter({ (track: String) -> Bool in
+                    return track.lowercased().contains(preparedSearch)
+                }).count > 0
+        }.sorted { $0.album < $1.album }
+        filteredItems = convertToMusicListItemPresentation(from: filteredMusicItems)
     }
 }
