@@ -7,53 +7,37 @@
 
 import Foundation
 import Combine
+import UIKit
 
-enum APIError: LocalizedError {
+enum APIError: LocalizedError, Equatable {
     case invalidRequestError(String)
     case defaultError(String)
 }
 
+struct APIEndPoints {
+    static let musicItemsList = "https://1979673067.rsc.cdn77.org/music-albums.json"
+}
+
 protocol MusicListLoadable {
-    func loadMusicListItems() -> AnyPublisher<[MusicItem], Error>
+    func loadMusicListItems(with urlString: String) -> AnyPublisher<[MusicItem], Error>
 }
 
-protocol APIRequestBuilding {
-    func buildRequest(from url: URL,
-                      httpMethod: String,
-                      headers: [String : String],
-                      httpBody: Data?) -> URLRequest
-}
+final class MusicListService: APIRequestBuilding, MusicListLoadable {
 
-final class MusicListService: APIRequestBuilding {
+    var publisher: APIDataTaskPublisher
 
-    // MARK: - Constants
-
-    let urlString = "https://1979673067.rsc.cdn77.org/music-albums.json"
-
-    // MARK: - Functions
-
-    func buildRequest(from url: URL,
-                      httpMethod: String = "GET",
-                      headers: [String : String] = [:],
-                      httpBody: Data? = nil) -> URLRequest {
-        var urlRequest = URLRequest(url: url)
-        urlRequest.allHTTPHeaderFields = headers
-        urlRequest.httpMethod = httpMethod
-        urlRequest.httpBody = httpBody
-        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        return urlRequest
+    init(with publisher: APIDataTaskPublisher = APISessionDataPublisher()) {
+        self.publisher = publisher
     }
-}
 
-extension MusicListService: MusicListLoadable {
-
-    func loadMusicListItems() -> AnyPublisher<[MusicItem], Error> {
-        guard let url = URL(string: urlString) else {
+    func loadMusicListItems(with urlString: String) -> AnyPublisher<[MusicItem], Error> {
+        guard let url = URL(string: urlString),
+              UIApplication.shared.canOpenURL(url) else {
             return Fail(error: APIError.invalidRequestError("URL invalid"))
                 .eraseToAnyPublisher()
         }
         let urlRequest = buildRequest(from: url)
-        return URLSession.shared.dataTaskPublisher(for: urlRequest)
+        return publisher.dataTaskPublisher(for: urlRequest)
             .map(\.data)
             .decode(type: [MusicItem].self, decoder: JSONDecoder())
             .mapError { error in

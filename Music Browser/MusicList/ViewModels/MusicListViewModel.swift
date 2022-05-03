@@ -73,7 +73,7 @@ extension MusicListViewModel: MusicItemsFetching {
 
     func updateMusicItems() {
         isLoading = true
-        service.loadMusicListItems()
+        service.loadMusicListItems(with: APIEndPoints.musicItemsList)
             .retry(3)
             .subscribe(on: DispatchQueue.global())
             .receive(on: RunLoop.main)

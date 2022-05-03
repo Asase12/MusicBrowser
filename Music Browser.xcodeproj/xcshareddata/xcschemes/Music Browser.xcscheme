@@ -49,16 +49,6 @@
                ReferencedContainer = "container:Music Browser.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "58C85DE3281F044300DB9555"
-               BuildableName = "Music BrowserUITests.xctest"
-               BlueprintName = "Music BrowserUITests"
-               ReferencedContainer = "container:Music Browser.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
