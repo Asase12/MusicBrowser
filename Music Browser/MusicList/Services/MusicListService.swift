@@ -11,7 +11,7 @@ import UIKit
 
 enum APIError: LocalizedError, Equatable {
     case invalidRequestError(String)
-    case defaultError(String)
+    case defaultError
 }
 
 struct APIEndPoints {
@@ -40,8 +40,8 @@ final class MusicListService: APIRequestBuilding, MusicListLoadable {
         return publisher.dataTaskPublisher(for: urlRequest)
             .map(\.data)
             .decode(type: [MusicItem].self, decoder: JSONDecoder())
-            .mapError { error in
-                APIError.defaultError(error.localizedDescription)
+            .mapError { _ in
+                APIError.defaultError
             }
             .first()
             .eraseToAnyPublisher()

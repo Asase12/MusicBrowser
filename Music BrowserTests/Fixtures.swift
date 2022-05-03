@@ -34,4 +34,8 @@ struct Fixtures {
                                              mimeType: nil,
                                              expectedContentLength: 0,
                                              textEncodingName: nil)
+
+    static let networkError = NSError(domain: "NSURLErrorDomain",
+                                      code: -1004, //kCFURLErrorCannotConnectToHost
+                                      userInfo: nil)
 }

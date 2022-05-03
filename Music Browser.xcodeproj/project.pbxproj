@@ -104,9 +104,17 @@
 		589203992821B3CD00510449 /* MusicList */ = {
 			isa = PBXGroup;
 			children = (
-				5892039D2821B56600510449 /* MusicListServiceTests.swift */,
+				589203A52821D0A500510449 /* Services */,
 			);
 			path = MusicList;
+			sourceTree = "<group>";
+		};
+		589203A52821D0A500510449 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				5892039D2821B56600510449 /* MusicListServiceTests.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		58AB70DC2820244D00EAC2CE /* Extensions */ = {

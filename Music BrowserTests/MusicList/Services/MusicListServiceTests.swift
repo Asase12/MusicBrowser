@@ -114,5 +114,31 @@ class MusicListServiceTests: XCTestCase {
         XCTAssertEqual(musicItems.count, 0)
         XCTAssertEqual(apiError, .invalidRequestError("URL invalid"))
     }
+
+    func testLoadMusicListItems_when_error_occurred() throws {
+        let service = MusicListService(with: customPublisher)
+        URLProtocolMock.response = Fixtures.invalidResponse
+        URLProtocolMock.error = Fixtures.networkError
+        let expectation = expectation(description: "Load MusicList Items when response is invalid")
+
+        var musicItems = [MusicItem]()
+        var apiError: APIError?
+        service.loadMusicListItems(with: Fixtures.validUrl.absoluteString)
+            .sink { completion in
+                switch completion {
+                case .finished: break
+                case .failure(let error):
+                    apiError = error as? APIError
+                }
+                expectation.fulfill()
+            } receiveValue: { items in
+                musicItems = items
+            }
+            .store(in: &disposables)
+
+        wait(for: [expectation], timeout: 5)
+        XCTAssertEqual(musicItems.count, 0)
+        XCTAssertEqual(apiError, .defaultError)
+    }
 }
 
