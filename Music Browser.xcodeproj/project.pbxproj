@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5892038A2821383500510449 /* MusicItemsAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589203892821383500510449 /* MusicItemsAdapter.swift */; };
 		58AB70DE2820246D00EAC2CE /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AB70DD2820246D00EAC2CE /* ViewExtension.swift */; };
 		58AB70E22820275500EAC2CE /* MusicItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AB70E12820275500EAC2CE /* MusicItemDetailView.swift */; };
 		58AB70E42820277200EAC2CE /* MusicDetailItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AB70E32820277200EAC2CE /* MusicDetailItemViewModel.swift */; };
@@ -49,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		589203892821383500510449 /* MusicItemsAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicItemsAdapter.swift; sourceTree = "<group>"; };
 		58AB70DD2820246D00EAC2CE /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		58AB70E12820275500EAC2CE /* MusicItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicItemDetailView.swift; sourceTree = "<group>"; };
 		58AB70E32820277200EAC2CE /* MusicDetailItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicDetailItemViewModel.swift; sourceTree = "<group>"; };
@@ -101,6 +103,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		589203882821381500510449 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				589203892821383500510449 /* MusicItemsAdapter.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		58AB70DC2820244D00EAC2CE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +235,7 @@
 			children = (
 				58C85E0B281F1AAE00DB9555 /* Fakes */,
 				58C85DFC281F079800DB9555 /* Models */,
+				589203882821381500510449 /* Protocols */,
 				58C85E01281F084600DB9555 /* Services */,
 				58C85DFD281F07A700DB9555 /* ViewModels */,
 				58C85DF9281F071A00DB9555 /* Views */,
@@ -422,6 +433,7 @@
 				58C85DFB281F073D00DB9555 /* MusicListViewModel.swift in Sources */,
 				58AB70E92820284900EAC2CE /* FakeMusicItemViewModel.swift in Sources */,
 				58C85E03281F086100DB9555 /* MusicListService.swift in Sources */,
+				5892038A2821383500510449 /* MusicItemsAdapter.swift in Sources */,
 				58AB70EC2820295900EAC2CE /* MusicDetailItemPresentation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

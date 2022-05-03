@@ -34,19 +34,18 @@ protocol MusicItemsFiltering: AnyObject {
     func filter(with searchText: String)
 }
 
-final class MusicListViewModel: ObservableObject, Loading, MusicItemsPresenting {
+final class MusicListViewModel: ObservableObject, Loading, MusicItemsPresenting, MusicItemsAdapter {
 
     // MARK: - Properties
 
     private var disposables: Set<AnyCancellable>
-
     private(set) var service: MusicListLoadable
 
     @Published private(set) var musicItems = [MusicItem]()
     @Published private(set) var presentationItems = [MusicListItemPresentation]()
     @Published private(set) var isLoading = false
-    @Published private(set) var filteredItems = [MusicListItemPresentation]()
     @Published private(set) var isFilterActive = false
+    @Published private(set) var filteredItems = [MusicListItemPresentation]()
 
     // MARK: - Constructor
 
@@ -67,19 +66,6 @@ final class MusicListViewModel: ObservableObject, Loading, MusicItemsPresenting 
                 self.isLoading = false
         }
         .store(in: &disposables)
-    }
-
-    //TODO: move to a protocol, test it
-    private func convertToMusicListItemPresentation(from musicItems: [MusicItem]) -> [MusicListItemPresentation] {
-        musicItems
-            .sorted { $0.album < $1.album }
-            .compactMap {
-            MusicListItemPresentation(id: $0.id,
-                                      imageUrl: URL(string: $0.coverUrlString),
-                                      album: $0.album,
-                                      artist: $0.artist,
-                                      year: $0.year)
-        }
     }
 }
 
