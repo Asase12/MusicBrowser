@@ -53,7 +53,9 @@ class MusicListServiceTests: XCTestCase {
             .store(in: &disposables)
 
         wait(for: [expectation], timeout: 5)
-        XCTAssertEqual(musicItems.count, 1)
+
+        XCTAssertEqual(musicItems.count, 3)
+
         XCTAssertEqual(musicItems[0].id, "10")
         XCTAssertEqual(musicItems[0].album, "album 0")
         XCTAssertEqual(musicItems[0].artist, "artist 0")
@@ -62,6 +64,26 @@ class MusicListServiceTests: XCTestCase {
         XCTAssertEqual(musicItems[0].tracks.count, 1)
         XCTAssertEqual(musicItems[0].tracks[0], "track 00")
         XCTAssertEqual(musicItems[0].year, "1990")
+
+        XCTAssertEqual(musicItems[1].id, "11")
+        XCTAssertEqual(musicItems[1].album, "some album 1")
+        XCTAssertEqual(musicItems[1].artist, "artist 1")
+        XCTAssertEqual(musicItems[1].label, "label 1")
+        XCTAssertEqual(musicItems[1].coverUrlString, "url 1")
+        XCTAssertEqual(musicItems[1].tracks.count, 2)
+        XCTAssertEqual(musicItems[1].tracks[0], "track 01")
+        XCTAssertEqual(musicItems[1].tracks[1], "some track")
+        XCTAssertEqual(musicItems[1].year, "2001")
+
+        XCTAssertEqual(musicItems[2].id, "12")
+        XCTAssertEqual(musicItems[2].album, "last album 2")
+        XCTAssertEqual(musicItems[2].artist, "artist 2")
+        XCTAssertEqual(musicItems[2].label, "label 2")
+        XCTAssertEqual(musicItems[2].coverUrlString, "url 2")
+        XCTAssertEqual(musicItems[2].tracks.count, 1)
+        XCTAssertEqual(musicItems[2].tracks[0], "track 12")
+        XCTAssertEqual(musicItems[2].year, "2020")
+
         XCTAssertNil(apiError)
     }
 

@@ -16,7 +16,7 @@ protocol MusicItemsPresenting: AnyObject {
 }
 
 protocol MusicItemsFetching: AnyObject {
-    func updateMusicItems()
+    func updateMusicItems(completion: @escaping ([MusicItem]) -> Void)
 }
 
 protocol Loading: AnyObject {
@@ -41,11 +41,12 @@ final class MusicListViewModel: ObservableObject, Loading, MusicItemsPresenting,
     private var disposables: Set<AnyCancellable>
     private(set) var service: MusicListLoadable
 
-    @Published private(set) var musicItems = [MusicItem]()
     @Published private(set) var presentationItems = [MusicListItemPresentation]()
     @Published private(set) var isLoading = false
     @Published private(set) var isFilterActive = false
     @Published private(set) var filteredItems = [MusicListItemPresentation]()
+
+    @Published var musicItems = [MusicItem]()
 
     // MARK: - Constructor
 
@@ -63,7 +64,6 @@ final class MusicListViewModel: ObservableObject, Loading, MusicItemsPresenting,
             .sink { [weak self] newValue in
                 guard let self = self else { return }
                 self.presentationItems = self.convertToMusicListItemPresentation(from: newValue)
-                self.isLoading = false
         }
         .store(in: &disposables)
     }
@@ -71,15 +71,17 @@ final class MusicListViewModel: ObservableObject, Loading, MusicItemsPresenting,
 
 extension MusicListViewModel: MusicItemsFetching {
 
-    func updateMusicItems() {
+    func updateMusicItems(completion: @escaping ([MusicItem]) -> Void) {
         isLoading = true
         service.loadMusicListItems(with: APIEndPoints.musicItemsList)
             .retry(3)
             .subscribe(on: DispatchQueue.global())
             .receive(on: RunLoop.main)
             .sink { _ in
-            } receiveValue: { [weak self] musicItems in
-                self?.musicItems = musicItems
+            } receiveValue: { [weak self] items in
+                self?.musicItems = items
+                self?.isLoading = false
+                completion(items)
             }
             .store(in: &disposables)
     }

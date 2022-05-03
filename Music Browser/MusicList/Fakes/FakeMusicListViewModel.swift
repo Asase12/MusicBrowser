@@ -18,7 +18,7 @@ final class FakeMusicListViewModel: ObservableObject, MusicItemsModifier {
     var isFilterActive = false
     var filteredItems = [MusicListItemPresentation]()
 
-    func updateMusicItems() {}
+    func updateMusicItems(completion: ([MusicItem]) -> Void) {}
     
     func musicDetailItemViewModel(for musicItemId: String, with imageUrl: URL?) -> MusicDetailItemViewModel? {
         return nil

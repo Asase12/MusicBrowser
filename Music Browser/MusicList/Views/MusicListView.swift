@@ -43,7 +43,7 @@ struct MusicListView<ViewModel>: View where ViewModel: MusicItemsModifier & Obse
             }))
         }
         .onAppear() {
-            viewModel.updateMusicItems()
+            viewModel.updateMusicItems(completion: { _ in })
         }
     }
 }

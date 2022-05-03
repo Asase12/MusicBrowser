@@ -19,7 +19,23 @@ struct Fixtures {
                       label: "label 0",
                       coverUrlString: "url 0",
                       tracks: ["track 00"],
-                      year: "1990")
+                      year: "1990"),
+
+            MusicItem(id: "11",
+                      album: "some album 1",
+                      artist: "artist 1",
+                      label: "label 1",
+                      coverUrlString: "url 1",
+                      tracks: ["track 01", "some track"],
+                      year: "2001"),
+
+            MusicItem(id: "12",
+                      album: "last album 2",
+                      artist: "artist 2",
+                      label: "label 2",
+                      coverUrlString: "url 2",
+                      tracks: ["track 12"],
+                      year: "2020")
         ]
     }
 
