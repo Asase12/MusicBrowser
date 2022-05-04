@@ -17,24 +17,9 @@ struct MusicItemDetailView<ViewModel>: View where ViewModel: ObservableObject & 
             ScrollView(.vertical) {
                 VStack(alignment: .center) {
 
-                    AsyncImage(url: viewModel.presentation.imageUrl, placeholder: Image(systemName: "peacesign"))
-                        .frame(width: 180, height: 180)
-                        .cornerRadius(8)
-                        .padding(.top, 20)
-                        .padding(.bottom, 20)
-
-                    Text(viewModel.presentation.album)
-                        .fontWeight(.bold)
-                        .multilineTextAlignment(.center)
-                        .padding(.bottom, 20)
-
-                    Text(viewModel.presentation.label)
-                        .foregroundColor(Color(.darkGray))
-                        .padding(.bottom, 2.0)
-
-                    Text(viewModel.presentation.year)
-                        .foregroundColor(Color(.darkGray))
-                        .padding(.bottom, 20)
+                    AlbumDetailView(album: viewModel.presentation.album,
+                                  label: viewModel.presentation.label,
+                                  year: viewModel.presentation.year)
 
                     VStack(alignment: .leading, spacing: 16.0) {
                         Text("Tracks:")
@@ -59,6 +44,36 @@ struct MusicItemDetailView<ViewModel>: View where ViewModel: ObservableObject & 
                 .navigationBarTitle(viewModel.presentation.artistName, displayMode: .inline)
             }
         }
+        .navigationViewStyle(.stack)
+    }
+}
+
+struct AlbumDetailView: View {
+
+    private(set) var imageUrl: URL?
+    private(set) var album: String
+    private(set) var label: String
+    private(set) var year: String
+
+    var body: some View {
+        AsyncImage(url: imageUrl, placeholder: Image(systemName: "peacesign"))
+            .frame(width: 180, height: 180)
+            .cornerRadius(8)
+            .padding(.top, 20)
+            .padding(.bottom, 20)
+
+        Text(album)
+            .fontWeight(.bold)
+            .multilineTextAlignment(.center)
+            .padding(.bottom, 20)
+
+        Text(label)
+            .foregroundColor(Color(.darkGray))
+            .padding(.bottom, 2.0)
+
+        Text(year)
+            .foregroundColor(Color(.darkGray))
+            .padding(.bottom, 20)
     }
 }
 

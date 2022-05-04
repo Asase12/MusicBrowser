@@ -42,6 +42,7 @@ struct MusicListView<ViewModel>: View where ViewModel: MusicItemsModifier & Obse
                 UIApplication.shared.endEditing()
             }))
         }
+        .navigationViewStyle(.stack)
         .onAppear() {
             viewModel.updateMusicItems(completion: { _ in })
         }
